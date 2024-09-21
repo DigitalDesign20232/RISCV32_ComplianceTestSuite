@@ -6,7 +6,7 @@ RISCV_GCC      ?= $(RISCV_PREFIX)gcc
 RISCV_OBJDUMP  ?= $(RISCV_PREFIX)objdump
 RISCV_OBJCOPY  ?= $(RISCV_PREFIX)objcopy
 RISCV_READELF  ?= $(RISCV_PREFIX)readelf
-RISCV_GCC_OPTS ?= -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -Tlink.ld
+RISCV_GCC_OPTS ?= -O0 -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -Tlink.ld
 
 BUILD_DIR := build
 INC_FLAGS := -I common
