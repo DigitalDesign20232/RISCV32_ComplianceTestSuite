@@ -1,0 +1,17 @@
+#include "macro.h"
+#include "isa_test.h"
+
+.section .data
+    signature: .space SIGNATURE_SIZE
+
+
+.section .text
+.option norvc;
+
+
+_start:
+    .global _start
+    INIT
+
+    la x1, signature
+
