@@ -19,6 +19,7 @@ IFS=',' read -r lower0 upper0 <<< "$range0"
 IFS=',' read -r lower1 upper1 <<< "$range1"
 IFS=',' read -r lower2 upper2 <<< "$range2"
 
+cat header.txt > "$output_file"
 for ((i = 0; i < command_count; i++)); do
     # Generate random values based on the provided ranges
     value0=$(random_in_range "$lower0" "$upper0")
