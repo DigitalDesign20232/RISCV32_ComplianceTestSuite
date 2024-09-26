@@ -2,9 +2,9 @@
 
 ## 1. Quick Start
 
-- Run command `make clean build_single INSTR=<instruction>` to generate test file
-- Example: `make clean build_single INSTR=addi`
+- Run command `make clean build_single ARCH=<arch> INSTR=<instruction>` to build the corresponding test
+- Example: `make clean build_single ARCH=rv32i INSTR=addi` will build the test in ./arch/rv32i/addi.S
 
-## 2. Auto Generate Test
+## 2. Test Suite Generator
 
-- Change directory to tools/, then follow the instruction in README.md
+- Change directory to [tools/](tools/), then follow the instruction in [README.md](tools/README.md)
