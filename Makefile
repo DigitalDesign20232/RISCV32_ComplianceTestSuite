@@ -1,3 +1,5 @@
+SHELL := bash
+
 ARCH ?= rv32i
 INSTR ?= addi
 
@@ -14,8 +16,29 @@ INC_FLAGS := -I common
 ARCH_DIR := arch
 INSTRUCTION_TEST := $(INSTR)
 
+# Find all .S files recursively
+ASM_FILES := $(shell find ./arch/ -name "*.S")
+
+# Create corresponding object files by replacing .S with .vmem
+OBJ_FILES := $(ASM_FILES:.S=.vmem)
+
+# Default target: build all object files
+all: $(OBJ_FILES)
+
+# Rule to compile .S files into .o files
+%.vmem: %.S
+	$(RISCV_GCC) $(RISCV_GCC_OPTS) $(INC_FLAGS) -o $(BUILD_DIR)/$(basename $(notdir $<)).elf $<
+	$(RISCV_OBJDUMP) -D $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).objdump
+	$(RISCV_READELF) -a $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).readelf
+	$(RISCV_OBJCOPY) -O binary $(BUILD_DIR)/$(basename $(notdir $<)).elf $(BUILD_DIR)/$(basename $(notdir $<)).bin
+	srec_cat $(BUILD_DIR)/$(basename $(notdir $<)).bin -binary -offset 0x0000 -byte-swap 4 -o $(BUILD_DIR)/$(basename $(notdir $<)).vmem -vmem 32 --output_block_size 4 -data_only
+
+	@echo ""
+	@echo "Test files generated in folder build/"
+
 clean:
 	-rm -r $(BUILD_DIR)
+	-mkdir $(BUILD_DIR)
 
 build_single:
 	-mkdir $(BUILD_DIR)
@@ -27,5 +50,8 @@ build_single:
 
 	@echo ""
 	@echo "Test files generated in folder build/"
+
+gen_test:
+	$(MAKE) -C tools/ all
 
 .PHONY: clean build_single
