@@ -2,7 +2,7 @@
 
 ## **1. Quick Start**
 
-- Run command `make all` to generate full assembly test
+- Run command `make clean all` to generate full assembly test
 
 ## **2. Configure Test**
 
