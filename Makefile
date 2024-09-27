@@ -3,6 +3,12 @@ SHELL := bash
 ARCH ?= rv32i
 INSTR ?= addi
 
+
+RED = \033[31m
+GREEN = \033[32m
+YELLOW = \033[33m
+RESET = \033[0m
+
 RISCV_PREFIX   ?= riscv32-unknown-elf-
 RISCV_GCC      ?= $(RISCV_PREFIX)gcc
 RISCV_OBJDUMP  ?= $(RISCV_PREFIX)objdump
@@ -24,23 +30,31 @@ OBJ_FILES := $(ASM_FILES:.S=.vmem)
 
 # Default target: build all object files
 all:
+	@echo -e "\n$(YELLOW)[MAKE] Creating directory: $(CURDIR)/$(BUILD_DIR)/...$(RESET)"
 	-mkdir -p $(BUILD_DIR)
+	@echo -e "\n$(YELLOW)[MAKE] Building testsuite...$(RESET)"
+	@echo -e "\n$(GREEN)Generating <instruction>.elf/.objdump/.readelf/.bin/.vmem...$(RESET)"
 	$(MAKE) build
+	@echo -e "$(GREEN)Test files generated in $(CURDIR)/$(BUILD_DIR)/$(RESET)"
 
 build: $(OBJ_FILES)
 
 # Rule to compile .S files into .o files
 %.vmem: %.S
-	$(RISCV_GCC) $(RISCV_GCC_OPTS) $(INC_FLAGS) -o $(BUILD_DIR)/$(basename $(notdir $<)).elf $<
-	$(RISCV_OBJDUMP) -D $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).objdump
-	$(RISCV_READELF) -a $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).readelf
-	$(RISCV_OBJCOPY) -O binary $(BUILD_DIR)/$(basename $(notdir $<)).elf $(BUILD_DIR)/$(basename $(notdir $<)).bin
-	srec_cat $(BUILD_DIR)/$(basename $(notdir $<)).bin -binary -offset 0x0000 -byte-swap 4 -o $(BUILD_DIR)/$(basename $(notdir $<)).vmem -vmem 32 --output_block_size 4 -data_only
+	@echo -e "$(GREEN) +) Compiling $<...$(RESET)"
+	@$(RISCV_GCC) $(RISCV_GCC_OPTS) $(INC_FLAGS) -o $(BUILD_DIR)/$(basename $(notdir $<)).elf $<
+	@$(RISCV_OBJDUMP) -D $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).objdump
+	@$(RISCV_READELF) -a $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).readelf
+	@$(RISCV_OBJCOPY) -O binary $(BUILD_DIR)/$(basename $(notdir $<)).elf $(BUILD_DIR)/$(basename $(notdir $<)).bin
+	@srec_cat $(BUILD_DIR)/$(basename $(notdir $<)).bin -binary -offset 0x0000 -byte-swap 4 -o $(BUILD_DIR)/$(basename $(notdir $<)).vmem -vmem 32 --output_block_size 4 -data_only
 
-	@echo ""
-	@echo "Test files generated in folder build/"
+	@if [ $$? -ne 0 ]; then \
+        echo -e "$(RED) Compilation failed!$(RESET)"; \
+    fi
+
 
 clean:
+	@echo -e "\n$(YELLOW)[MAKE] Cleaning directory: $(CURDIR)/$(BUILD_DIR)/...$(RESET)"
 	-rm -rf $(BUILD_DIR)
 
 build_single:
