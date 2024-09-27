@@ -23,7 +23,11 @@ ASM_FILES := $(shell find ./arch/ -name "*.S")
 OBJ_FILES := $(ASM_FILES:.S=.vmem)
 
 # Default target: build all object files
-all: $(OBJ_FILES)
+all:
+	-mkdir -p $(BUILD_DIR)
+	$(MAKE) build
+
+build: $(OBJ_FILES)
 
 # Rule to compile .S files into .o files
 %.vmem: %.S
@@ -37,8 +41,7 @@ all: $(OBJ_FILES)
 	@echo "Test files generated in folder build/"
 
 clean:
-	-rm -r $(BUILD_DIR)
-	-mkdir $(BUILD_DIR)
+	-rm -rf $(BUILD_DIR)
 
 build_single:
 	-mkdir $(BUILD_DIR)
