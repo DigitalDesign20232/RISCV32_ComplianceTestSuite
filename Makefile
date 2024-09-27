@@ -34,8 +34,7 @@ all:
 	-mkdir -p $(BUILD_DIR)
 	@echo -e "\n$(YELLOW)[MAKE] Building testsuite...$(RESET)"
 	@echo -e "\n$(GREEN)Generating <instruction>.elf/.objdump/.readelf/.bin/.vmem...$(RESET)"
-	$(MAKE) build
-	@echo -e "$(GREEN)Test files generated in $(CURDIR)/$(BUILD_DIR)/$(RESET)"
+	@$(MAKE) build && ([ $$? -eq 0 ] && echo -e "$(GREEN)Test files generated in $(CURDIR)/$(BUILD_DIR)/$(RESET)") || echo -e "$(RED)Building error: Compilation failed!$(RESET)"
 
 build: $(OBJ_FILES)
 
@@ -47,11 +46,6 @@ build: $(OBJ_FILES)
 	@$(RISCV_READELF) -a $(BUILD_DIR)/$(basename $(notdir $<)).elf > $(BUILD_DIR)/$(basename $(notdir $<)).readelf
 	@$(RISCV_OBJCOPY) -O binary $(BUILD_DIR)/$(basename $(notdir $<)).elf $(BUILD_DIR)/$(basename $(notdir $<)).bin
 	@srec_cat $(BUILD_DIR)/$(basename $(notdir $<)).bin -binary -offset 0x0000 -byte-swap 4 -o $(BUILD_DIR)/$(basename $(notdir $<)).vmem -vmem 32 --output_block_size 4 -data_only
-
-	@if [ $$? -ne 0 ]; then \
-        echo -e "$(RED) Compilation failed!$(RESET)"; \
-    fi
-
 
 clean:
 	@echo -e "\n$(YELLOW)[MAKE] Cleaning directory: $(CURDIR)/$(BUILD_DIR)/...$(RESET)"
