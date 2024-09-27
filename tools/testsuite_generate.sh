@@ -2,11 +2,12 @@
 BASE_DIR="../arch"
 ARCH_I_DIR="rv32i"
 
+NUM_OF_TEST_I=512
 # Given "test_suite" = array of "test"
 # Format of "test": "<list of instruction>:<macro>:<template contain placeholder {$0}, {$1}, {$2}>:<range of $0>:<range of $1>:<range of $2>:<number of tests>:<output directory>"
 test_suite=(
-    "addi xori ori andi:TEST_I_TYPE:x{\$0}, x{\$1}, {\$2}, x1:2,31:0,31:-2048,2047:512:$BASE_DIR/$ARCH_I_DIR"
-    "slli srli srai slti sltiu:TEST_I_TYPE:x{\$0}, x{\$1}, {\$2}, x1:2,31:0,31:0,31:512:$BASE_DIR/$ARCH_I_DIR"
+    "addi xori ori andi:TEST_I_TYPE:x{\$0}, x{\$1}, {\$2}, x1:2,31:0,31:-2048,2047:$NUM_OF_TEST_I:$BASE_DIR/$ARCH_I_DIR"
+    "slli srli srai slti sltiu:TEST_I_TYPE:x{\$0}, x{\$1}, {\$2}, x1:2,31:0,31:0,31:$NUM_OF_TEST_I:$BASE_DIR/$ARCH_I_DIR"
 )
 
 for test in "${test_suite[@]}"; do
