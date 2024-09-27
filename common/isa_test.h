@@ -16,4 +16,10 @@
     sw rd, 0(reg_mem_addr); \
     addi reg_mem_addr, reg_mem_addr, 4;
 
+#define TEST_S_TYPE(instruction, rs1, rs2, imm, reg_mem_addr) \
+    instruction rs2, imm(rs1); \
+    lw rs2, imm(rs1); \
+    sw rs2, 0(reg_mem_addr); \
+    addi reg_mem_addr, reg_mem_addr, 4;
+
 #endif

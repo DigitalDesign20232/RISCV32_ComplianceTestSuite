@@ -1,5 +1,5 @@
 clean:
-	-rm -rf ../arch/*.S
+	-rm -rf ../arch/*
 
-all:
+all: clean
 	./testsuite_generate.sh
