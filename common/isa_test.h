@@ -11,4 +11,9 @@
     sw rd, 0(reg_mem_addr); \
     addi reg_mem_addr, reg_mem_addr, 4;
 
+#define TEST_I_TYPE_LOAD(instruction, rd, rs1, imm, reg_mem_addr) \
+    instruction rd, imm(rs1); \
+    sw rd, 0(reg_mem_addr); \
+    addi reg_mem_addr, reg_mem_addr, 4;
+
 #endif
