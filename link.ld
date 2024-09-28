@@ -4,7 +4,7 @@ OUTPUT_ARCH( "riscv" )
 MEMORY
 {
     FLASH (rx)  : ORIGIN = 0x00000000, LENGTH = 52K
-    RAM   (rwx) : ORIGIN = 0x0000F800, LENGTH = 12K
+    RAM   (rwx) : ORIGIN = 0x0000D000, LENGTH = 12K
 }
 
 BOOT_ADDR    = 0x00000000;
