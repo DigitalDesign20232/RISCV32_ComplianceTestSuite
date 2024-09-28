@@ -33,5 +33,7 @@ SECTIONS
     {
         *(.data)
         *(.data.*)
+        FILL(0x00000000);      /* Fill remaining space with 0x13000000 */
+        . = ORIGIN(RAM) + LENGTH(RAM);  /* Set the current location counter to the end of FLASH */
     } > RAM
 }
