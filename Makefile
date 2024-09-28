@@ -26,7 +26,7 @@ INSTRUCTION_TEST := $(INSTR)
 ASM_FILES := $(shell find ./arch/ -name "*.S")
 
 # Create corresponding object files by replacing .S with .vmem
-OBJ_FILES := $(ASM_FILES:.S=.vmem)
+OBJ_FILES := $(sort $(ASM_FILES:.S=.vmem))
 
 # Default target: build all object files
 all:
