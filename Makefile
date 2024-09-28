@@ -55,8 +55,7 @@ build_single:
 	$(RISCV_OBJCOPY) -O binary $(BUILD_DIR)/$(INSTRUCTION_TEST).elf $(BUILD_DIR)/$(INSTRUCTION_TEST).bin
 	srec_cat $(BUILD_DIR)/$(INSTRUCTION_TEST).bin -binary -offset 0x0000 -byte-swap 4 -o $(BUILD_DIR)/$(INSTRUCTION_TEST).vmem -vmem 32 --output_block_size 4 -data_only
 
-	@echo "".data so they don’t collide during execution.
-Memory Size: Adjust the RAM size (LENGTH) in the MEMORY block as per your actual hardware to ensure that the sections fit within the available memory.
+	@echo ""
 	@echo "Test files generated in folder build/"
 
 gen_test:
